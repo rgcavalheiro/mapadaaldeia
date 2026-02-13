@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mapa Tibia 7.1</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="app">
+    <header class="header">
+      <h1>Mapa Tibia 7.1</h1>
+      <div class="coord-display">
+        <span>X: <strong id="coord-x">0</strong></span>
+        <span>Y: <strong id="coord-y">0</strong></span>
+        <span>Andar: <strong id="coord-z">7</strong></span>
+      </div>
+    </header>
+
+    <main class="map-wrapper" id="map-wrapper">
+      <div class="map-container" id="map-container">
+        <canvas id="map-canvas" width="4096" height="4096"></canvas>
+        <img id="map-image" alt="Mapa Tibia 7.1" class="map-image hidden">
+      </div>
+    </main>
+
+    <aside class="controls">
+      <div class="control-group">
+        <label>Andar (Z)</label>
+        <select id="floor-select">
+          <option value="15">15 (superficie)</option>
+          <option value="14">14</option>
+          <option value="13">13</option>
+          <option value="12">12</option>
+          <option value="11">11</option>
+          <option value="10">10</option>
+          <option value="9">9</option>
+          <option value="8">8</option>
+          <option value="7" selected>7 (principal)</option>
+          <option value="6">6</option>
+          <option value="5">5</option>
+          <option value="4">4</option>
+          <option value="3">3</option>
+          <option value="2">2</option>
+          <option value="1">1</option>
+          <option value="0">0 (subterraneo)</option>
+        </select>
+      </div>
+      <div class="control-group zoom-buttons">
+        <button type="button" id="zoom-in" title="Aumentar zoom">+</button>
+        <button type="button" id="zoom-out" title="Diminuir zoom">−</button>
+      </div>
+      <div class="control-group">
+        <button type="button" id="center-thais" class="btn-link">Centralizar Thais</button>
+      </div>
+    </aside>
+
+    <footer class="footer">
+      <p>Use o mouse para arrastar o mapa. Scroll para zoom. Coordenadas no estilo Tibia Wiki (<code>#x,y,z</code>).</p>
+    </footer>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
