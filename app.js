@@ -31,6 +31,17 @@
   const coordXEl = document.getElementById('coord-x');
   const coordYEl = document.getElementById('coord-y');
   const coordZEl = document.getElementById('coord-z');
+  const tabMapa = document.getElementById('tab-mapa');
+  const tabExp = document.getElementById('tab-exp');
+  const mapWrapper = document.getElementById('map-wrapper');
+  const expPanel = document.getElementById('exp-panel');
+  const controlsSidebar = document.getElementById('controls-sidebar');
+  const headerCoords = document.getElementById('header-coords');
+  const expTableBody = document.getElementById('exp-table-body');
+  const expLevelMin = document.getElementById('exp-level-min');
+  const expLevelMax = document.getElementById('exp-level-max');
+  const expApplyRange = document.getElementById('exp-apply-range');
+  const expSearchLevel = document.getElementById('exp-search-level');
 
   let scale = 0.5;
   let posX = 0;
@@ -46,10 +57,77 @@
   var lastSpawnScale = null;
   var spawnSearchQuery = '';
   var spawnsVisible = false;
+  var isInitialMapLoad = true;
+  /** Centro do viewport em coordenadas de mundo, salvo ao trocar de andar para manter a posiÃƒÆ’Ã‚Â§ÃƒÆ’Ã‚Â£o. */
+  var savedCenterForFloorSwitch = null;
 
   const MIN_SCALE = 0.1;
   const MAX_SCALE = 15;
   const ZOOM_STEP = 1.2;
+
+  /** ExperiÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€¦Ã‚Â¡ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Âªncia total para alcanÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€¦Ã‚Â¡ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â§ar o level (fÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€¦Ã‚Â¡ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â³rmula Tibia 7.x). Level 1 = 0. */
+  function expForLevel(level) {
+    if (level <= 1) return 0;
+    var n = level;
+    return Math.floor((50 / 3) * (n * n * n - 6 * n * n + 17 * n - 12));
+  }
+
+  function expForThisLevel(level) {
+    if (level <= 1) return 0;
+    return expForLevel(level) - expForLevel(level - 1);
+  }
+
+  function formatExp(num) {
+    return num.toLocaleString('pt-BR');
+  }
+
+  function renderExpTable(minLvl, maxLvl) {
+    if (!expTableBody) return;
+    minLvl = Math.max(1, parseInt(minLvl, 10) || 1);
+    maxLvl = Math.min(999, Math.max(minLvl, parseInt(maxLvl, 10) || 100));
+    expTableBody.innerHTML = '';
+    for (var l = minLvl; l <= maxLvl; l++) {
+      var total = expForLevel(l);
+      var thisLevel = expForThisLevel(l);
+      var tr = document.createElement('tr');
+      tr.setAttribute('data-level', String(l));
+      tr.innerHTML = '<td>' + l + '</td><td>' + formatExp(total) + '</td><td>' + formatExp(thisLevel) + '</td>';
+      expTableBody.appendChild(tr);
+    }
+  }
+
+  function switchTab(toExp) {
+    if (toExp) {
+      tabMapa.classList.remove('active');
+      tabMapa.setAttribute('aria-selected', 'false');
+      tabExp.classList.add('active');
+      tabExp.setAttribute('aria-selected', 'true');
+      mapWrapper.classList.add('hidden');
+      if (controlsSidebar) controlsSidebar.classList.add('hidden');
+      if (headerCoords) headerCoords.classList.add('hidden');
+      if (expPanel) {
+        expPanel.classList.remove('hidden');
+        var min = parseInt(expLevelMin.value, 10) || 1;
+        var max = parseInt(expLevelMax.value, 10) || 100;
+        renderExpTable(min, max);
+      }
+    } else {
+      tabExp.classList.remove('active');
+      tabExp.setAttribute('aria-selected', 'false');
+      tabMapa.classList.add('active');
+      tabMapa.setAttribute('aria-selected', 'true');
+      if (expPanel) expPanel.classList.add('hidden');
+      mapWrapper.classList.remove('hidden');
+      if (controlsSidebar) controlsSidebar.classList.remove('hidden');
+      if (headerCoords) headerCoords.classList.remove('hidden');
+    }
+  }
+
+  function scrollExpToLevel(level) {
+    if (!expTableBody) return;
+    var row = expTableBody.querySelector('tr[data-level="' + level + '"]');
+    if (row) row.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }
 
   function getCanvasSize() {
     var w, h;
@@ -402,8 +480,14 @@
   });
 
   floorSelect.addEventListener('change', function () {
-    coordZEl.textContent = this.value;
-    loadFloorMap(this.value);
+    var newZ = this.value;
+    var { w, h } = getCanvasSize();
+    var centerX = w / 2 - posX / scale;
+    var centerY = h / 2 - posY / scale;
+    var world = pixelToWorld(centerX, centerY);
+    savedCenterForFloorSwitch = { x: world.x, y: world.y };
+    coordZEl.textContent = newZ;
+    loadFloorMap(newZ);
     updateHash();
   });
 
@@ -461,11 +545,23 @@
       useImage = true;
       mapImage.classList.remove('hidden');
       canvas.classList.add('hidden');
-      if (window.location.hash) {
+      if (savedCenterForFloorSwitch) {
+        var cx = savedCenterForFloorSwitch.x;
+        var cy = savedCenterForFloorSwitch.y;
+        savedCenterForFloorSwitch = null;
+        var p = worldToPixel(cx, cy);
+        var wh = getCanvasSize();
+        posX = (wh.w / 2 - p.x) * scale;
+        posY = (wh.h / 2 - p.y) * scale;
+        coordXEl.textContent = cx;
+        coordYEl.textContent = cy;
+        coordZEl.textContent = z;
+      } else if (window.location.hash) {
         readHash();
-      } else {
+      } else if (isInitialMapLoad) {
         centerOnThais();
       }
+      isInitialMapLoad = false;
       applyTransform();
       renderSpawnMarkers(parseInt(z, 10));
     };
@@ -478,6 +574,8 @@
       mapContentWrapper.style.width = canvas.width + 'px';
       mapContentWrapper.style.height = canvas.height + 'px';
       drawPlaceholder();
+      isInitialMapLoad = false;
+      savedCenterForFloorSwitch = null;
       readHash();
       applyTransform();
       renderSpawnMarkers(parseInt(z, 10));
@@ -486,6 +584,38 @@
   }
 
   centerThaisBtn.addEventListener('click', centerOnThais);
+
+  if (tabMapa) {
+    tabMapa.addEventListener('click', function () { switchTab(false); });
+  }
+  if (tabExp) {
+    tabExp.addEventListener('click', function () { switchTab(true); });
+  }
+  if (expApplyRange && expLevelMin && expLevelMax) {
+    expApplyRange.addEventListener('click', function () {
+      var min = parseInt(expLevelMin.value, 10) || 1;
+      var max = parseInt(expLevelMax.value, 10) || 100;
+      renderExpTable(min, max);
+    });
+  }
+  if (expSearchLevel) {
+    expSearchLevel.addEventListener('input', function () {
+      var level = parseInt(expSearchLevel.value, 10);
+      if (!level || level < 1) return;
+      var min = parseInt(expLevelMin.value, 10) || 1;
+      var max = parseInt(expLevelMax.value, 10) || 100;
+      if (level >= min && level <= max) {
+        scrollExpToLevel(level);
+      } else {
+        var newMin = Math.max(1, level - 25);
+        var newMax = Math.min(999, level + 25);
+        expLevelMin.value = newMin;
+        expLevelMax.value = newMax;
+        renderExpTable(newMin, newMax);
+        scrollExpToLevel(level);
+      }
+    });
+  }
 
   window.addEventListener('hashchange', readHash);
 
