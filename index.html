@@ -19,9 +19,15 @@
 
     <main class="map-wrapper" id="map-wrapper">
       <div class="map-container" id="map-container">
-        <canvas id="map-canvas" width="4096" height="4096"></canvas>
-        <img id="map-image" alt="Mapa Tibia 7.1" class="map-image hidden">
+        <div class="map-content-wrapper" id="map-content-wrapper">
+          <canvas id="map-canvas" width="4096" height="4096"></canvas>
+          <img id="map-image" alt="Mapa Tibia 7.1" class="map-image hidden">
+          <div id="spawns-overlay" class="spawns-overlay">
+            <canvas id="spawns-canvas"></canvas>
+          </div>
+        </div>
       </div>
+      <div id="spawn-tooltip" class="spawn-tooltip" aria-hidden="true"></div>
     </main>
 
     <aside class="controls">
@@ -48,10 +54,20 @@
       </div>
       <div class="control-group zoom-buttons">
         <button type="button" id="zoom-in" title="Aumentar zoom">+</button>
-        <button type="button" id="zoom-out" title="Diminuir zoom">−</button>
+        <button type="button" id="zoom-out" title="Diminuir zoom">&minus;</button>
       </div>
       <div class="control-group">
         <button type="button" id="center-thais" class="btn-link">Centralizar Thais</button>
+      </div>
+      <div class="control-group">
+        <label class="checkbox-label">
+          <input type="checkbox" id="spawns-toggle">
+          <span>Mostrar spawns</span>
+        </label>
+      </div>
+      <div class="control-group">
+        <label for="spawn-search">Buscar monstro/NPC</label>
+        <input type="text" id="spawn-search" placeholder="Ex: dragon, dwarf, Thais..." autocomplete="off">
       </div>
     </aside>
 
