@@ -1,12 +1,30 @@
+/* ===== Mapa da Aldeia ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â€šÂ¬Ã¯Â¿Â½ Tibia 7.1 ===== */
+:root {
+  /* Paleta aldeia: terras, dourado, floresta */
+  --aldeia-bg: #0f0e0c;
+  --aldeia-surface: #1c1916;
+  --aldeia-surface-alt: #25221e;
+  --aldeia-border: #3d3832;
+  --aldeia-border-soft: #2a2724;
+  --aldeia-accent: #c9a227;
+  --aldeia-accent-dim: #a68520;
+  --aldeia-accent-glow: rgba(201, 162, 39, 0.25);
+  --aldeia-text: #e8e4dc;
+  --aldeia-text-muted: #9a958c;
+  --aldeia-map-bg: #3300cc;
+  --aldeia-gold-light: #e8d9a8;
+  --aldeia-wood: #4a4238;
+}
+
 * {
   box-sizing: border-box;
 }
 
 body {
   margin: 0;
-  font-family: "Segoe UI", system-ui, sans-serif;
-  background: #1a1a1e;
-  color: #e0e0e0;
+  font-family: "Outfit", "Segoe UI", system-ui, sans-serif;
+  background: var(--aldeia-bg);
+  color: var(--aldeia-text);
   min-height: 100vh;
   overflow: hidden;
 }
@@ -23,51 +41,69 @@ body {
   gap: 0;
 }
 
+/* ----- Header / Brand ----- */
 .header {
   grid-area: header;
   display: flex;
   align-items: center;
   justify-content: space-between;
   flex-wrap: wrap;
-  gap: 0.5rem;
-  padding: 0.75rem 1rem;
-  background: #25252a;
-  border-bottom: 1px solid #3a3a42;
+  gap: 0.75rem;
+  padding: 0.6rem 1rem;
+  background: var(--aldeia-surface);
+  border-bottom: 1px solid var(--aldeia-border-soft);
+  box-shadow: 0 1px 0 rgba(201, 162, 39, 0.06);
 }
 
-.header h1 {
+.brand {
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+}
+
+.brand .brand-name {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--aldeia-gold-light);
+  letter-spacing: 0.02em;
+}
+
+.brand-sub {
   margin: 0;
-  font-size: 1.25rem;
-  font-weight: 600;
-  color: #c8b273;
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: var(--aldeia-text-muted);
+  letter-spacing: 0.04em;
 }
 
 .tabs {
   display: flex;
   gap: 0;
-  border-radius: 6px;
+  border-radius: 8px;
   overflow: hidden;
-  border: 1px solid #3a3a42;
+  border: 1px solid var(--aldeia-border);
+  background: var(--aldeia-bg);
 }
 
 .tabs .tab {
-  padding: 0.4rem 0.9rem;
+  padding: 0.45rem 1rem;
   font-size: 0.85rem;
-  background: #1a1a1e;
+  font-weight: 500;
+  background: transparent;
   border: none;
-  color: #7a7a85;
+  color: var(--aldeia-text-muted);
   cursor: pointer;
-  transition: background 0.15s, color 0.15s;
+  transition: background 0.2s, color 0.2s;
 }
 
 .tabs .tab:hover {
-  color: #e0e0e0;
-  background: #25252a;
+  color: var(--aldeia-text);
+  background: var(--aldeia-surface-alt);
 }
 
 .tabs .tab.active {
-  background: #c8b273;
-  color: #1a1a1e;
+  background: var(--aldeia-accent);
+  color: var(--aldeia-bg);
   font-weight: 600;
 }
 
@@ -82,21 +118,24 @@ body {
 .coord-display {
   display: flex;
   gap: 1.25rem;
-  font-size: 0.9rem;
-  color: #9a9aa3;
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--aldeia-text-muted);
 }
 
 .coord-display strong {
-  color: #e8d5a3;
-  font-family: "Consolas", monospace;
+  color: var(--aldeia-accent);
+  font-family: "Consolas", "Monaco", monospace;
+  font-weight: 600;
 }
 
+/* ----- Map area ----- */
 .map-wrapper {
   grid-area: map;
   overflow: hidden;
   position: relative;
   cursor: grab;
-  background: #0f0f12;
+  background: var(--aldeia-map-bg);
   user-select: none;
   -webkit-user-select: none;
 }
@@ -108,7 +147,7 @@ body {
 .exp-panel {
   grid-area: map;
   overflow: auto;
-  background: #0f0f12;
+  background: var(--aldeia-map-bg);
   display: flex;
   align-items: flex-start;
   justify-content: center;
@@ -127,13 +166,14 @@ body {
 .exp-panel h2 {
   margin: 0 0 0.5rem;
   font-size: 1.25rem;
-  color: #c8b273;
+  font-weight: 600;
+  color: var(--aldeia-accent);
 }
 
 .exp-desc {
   margin: 0 0 1rem;
   font-size: 0.9rem;
-  color: #7a7a85;
+  color: var(--aldeia-text-muted);
 }
 
 .exp-controls,
@@ -148,9 +188,10 @@ body {
 .exp-controls label,
 .exp-search label {
   font-size: 0.75rem;
+  font-weight: 500;
   text-transform: uppercase;
   letter-spacing: 0.05em;
-  color: #7a7a85;
+  color: var(--aldeia-text-muted);
   margin-right: 0.25rem;
 }
 
@@ -158,25 +199,26 @@ body {
 .exp-search input[type="number"] {
   width: 5rem;
   padding: 0.4rem 0.5rem;
-  background: #1a1a1e;
-  border: 1px solid #3a3a42;
-  border-radius: 4px;
-  color: #e0e0e0;
+  background: var(--aldeia-surface);
+  border: 1px solid var(--aldeia-border);
+  border-radius: 6px;
+  color: var(--aldeia-text);
   font-size: 0.9rem;
 }
 
 .exp-controls input:focus,
 .exp-search input:focus {
-  border-color: #c8b273;
+  border-color: var(--aldeia-accent);
   outline: none;
+  box-shadow: 0 0 0 2px var(--aldeia-accent-glow);
 }
 
 .exp-table-wrap {
   overflow: auto;
   max-height: calc(100vh - 220px);
-  border: 1px solid #3a3a42;
-  border-radius: 6px;
-  background: #1a1a1e;
+  border: 1px solid var(--aldeia-border);
+  border-radius: 8px;
+  background: var(--aldeia-surface);
 }
 
 .exp-table {
@@ -189,28 +231,28 @@ body {
 .exp-table td {
   padding: 0.5rem 0.75rem;
   text-align: left;
-  border-bottom: 1px solid #2a2a30;
+  border-bottom: 1px solid var(--aldeia-border-soft);
 }
 
 .exp-table th {
   position: sticky;
   top: 0;
-  background: #25252a;
-  color: #c8b273;
+  background: var(--aldeia-surface-alt);
+  color: var(--aldeia-accent);
   font-weight: 600;
   z-index: 1;
 }
 
 .exp-table td {
-  color: #e0e0e0;
+  color: var(--aldeia-text);
 }
 
 .exp-table tbody tr:hover {
-  background: #25252a;
+  background: var(--aldeia-surface-alt);
 }
 
 .exp-table tbody tr[data-level].highlight {
-  background: rgba(200, 178, 115, 0.2);
+  background: var(--aldeia-accent-glow);
 }
 
 .exp-table td:nth-child(2),
@@ -256,16 +298,16 @@ body {
 .spawn-tooltip {
   position: fixed;
   z-index: 10;
-  padding: 0.35rem 0.6rem;
+  padding: 0.4rem 0.75rem;
   font-size: 0.8rem;
-  background: rgba(20, 20, 24, 0.95);
-  border: 1px solid #3a3a42;
-  border-radius: 4px;
-  color: #e0e0e0;
+  background: var(--aldeia-surface);
+  border: 1px solid var(--aldeia-border);
+  border-radius: 6px;
+  color: var(--aldeia-text);
   pointer-events: none;
   max-width: 280px;
   white-space: normal;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.4);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
   display: none;
 }
 
@@ -291,15 +333,17 @@ body {
   display: none !important;
 }
 
+/* ----- Sidebar controls ----- */
 .controls {
   grid-area: controls;
-  width: 200px;
+  width: 220px;
   padding: 1rem;
-  background: #25252a;
-  border-left: 1px solid #3a3a42;
+  background: var(--aldeia-surface);
+  border-left: 1px solid var(--aldeia-border-soft);
   display: flex;
   flex-direction: column;
   gap: 1rem;
+  box-shadow: -2px 0 8px rgba(0, 0, 0, 0.2);
 }
 
 .control-group {
@@ -310,9 +354,10 @@ body {
 
 .control-group label {
   font-size: 0.75rem;
+  font-weight: 500;
   text-transform: uppercase;
   letter-spacing: 0.05em;
-  color: #7a7a85;
+  color: var(--aldeia-text-muted);
 }
 
 .control-group label.checkbox-label {
@@ -321,51 +366,52 @@ body {
   gap: 0.5rem;
   cursor: pointer;
   text-transform: none;
-  color: #e0e0e0;
+  color: var(--aldeia-text);
 }
 
 .control-group label.checkbox-label input {
   width: 1rem;
   height: 1rem;
-  accent-color: #c8b273;
+  accent-color: var(--aldeia-accent);
   cursor: pointer;
 }
 
 .control-group select {
-  padding: 0.5rem 0.6rem;
-  background: #1a1a1e;
-  border: 1px solid #3a3a42;
-  border-radius: 4px;
-  color: #e0e0e0;
+  padding: 0.5rem 0.65rem;
+  background: var(--aldeia-bg);
+  border: 1px solid var(--aldeia-border);
+  border-radius: 6px;
+  color: var(--aldeia-text);
   font-size: 0.9rem;
   cursor: pointer;
 }
 
 .control-group select:hover,
 .control-group select:focus {
-  border-color: #c8b273;
+  border-color: var(--aldeia-accent);
   outline: none;
 }
 
 .control-group input[type="text"] {
-  padding: 0.5rem 0.6rem;
-  background: #1a1a1e;
-  border: 1px solid #3a3a42;
-  border-radius: 4px;
-  color: #e0e0e0;
+  padding: 0.5rem 0.65rem;
+  background: var(--aldeia-bg);
+  border: 1px solid var(--aldeia-border);
+  border-radius: 6px;
+  color: var(--aldeia-text);
   font-size: 0.9rem;
   width: 100%;
 }
 
 .control-group input[type="text"]:hover,
 .control-group input[type="text"]:focus {
-  border-color: #c8b273;
+  border-color: var(--aldeia-accent);
   outline: none;
 }
 
 .zoom-buttons {
   flex-direction: row;
   align-items: center;
+  gap: 0.5rem;
 }
 
 .zoom-buttons button {
@@ -374,51 +420,56 @@ body {
   padding: 0;
   font-size: 1.25rem;
   line-height: 1;
-  background: #1a1a1e;
-  border: 1px solid #3a3a42;
-  border-radius: 4px;
-  color: #e0e0e0;
+  background: var(--aldeia-bg);
+  border: 1px solid var(--aldeia-border);
+  border-radius: 6px;
+  color: var(--aldeia-text);
   cursor: pointer;
+  transition: border-color 0.2s, color 0.2s;
 }
 
 .zoom-buttons button:hover {
-  background: #2a2a30;
-  border-color: #c8b273;
-  color: #c8b273;
+  border-color: var(--aldeia-accent);
+  color: var(--aldeia-accent);
 }
 
 .btn-link {
   padding: 0.5rem 0.75rem;
   background: transparent;
-  border: 1px solid #3a3a42;
-  border-radius: 4px;
-  color: #a89f7a;
+  border: 1px solid var(--aldeia-border);
+  border-radius: 6px;
+  color: var(--aldeia-accent-dim);
   font-size: 0.85rem;
+  font-weight: 500;
   cursor: pointer;
   text-align: center;
+  transition: border-color 0.2s, color 0.2s;
 }
 
 .btn-link:hover {
-  border-color: #c8b273;
-  color: #c8b273;
+  border-color: var(--aldeia-accent);
+  color: var(--aldeia-accent);
 }
 
+/* ----- Footer ----- */
 .footer {
   grid-area: footer;
   padding: 0.4rem 1rem;
   font-size: 0.75rem;
-  color: #6a6a75;
-  background: #1a1a1e;
-  border-top: 1px solid #2a2a30;
+  color: var(--aldeia-text-muted);
+  background: var(--aldeia-surface);
+  border-top: 1px solid var(--aldeia-border-soft);
 }
 
 .footer code {
-  background: #25252a;
-  padding: 0.1em 0.35em;
-  border-radius: 3px;
+  background: var(--aldeia-bg);
+  padding: 0.15em 0.4em;
+  border-radius: 4px;
   font-size: 0.85em;
+  color: var(--aldeia-accent-dim);
 }
 
+/* ----- Responsivo ----- */
 @media (max-width: 640px) {
   .app {
     grid-template-rows: auto auto 1fr auto;
@@ -430,12 +481,22 @@ body {
       "footer";
   }
 
+  .header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .brand .brand-name {
+    font-size: 1.1rem;
+  }
+
   .controls {
     width: 100%;
     flex-direction: row;
     flex-wrap: wrap;
     border-left: none;
-    border-bottom: 1px solid #3a3a42;
+    border-bottom: 1px solid var(--aldeia-border-soft);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
   }
 
   .control-group {

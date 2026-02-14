@@ -3,13 +3,19 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Mapa Tibia 7.1</title>
+  <title>Mapa da Aldeia - Tibia 7.1</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
   <div class="app">
     <header class="header">
-      <h1>Mapa Tibia 7.1</h1>
+      <div class="brand">
+        <h1><span class="brand-name">Mapa da Aldeia</span></h1>
+        <p class="brand-sub">Tibia 7.1</p>
+      </div>
       <nav class="tabs" role="tablist">
         <button type="button" class="tab active" id="tab-mapa" role="tab" aria-selected="true">Mapa</button>
         <button type="button" class="tab" id="tab-exp" role="tab" aria-selected="false">Exp por Level</button>
@@ -25,7 +31,7 @@
       <div class="map-container" id="map-container">
         <div class="map-content-wrapper" id="map-content-wrapper">
           <canvas id="map-canvas" width="4096" height="4096"></canvas>
-          <img id="map-image" alt="Mapa Tibia 7.1" class="map-image hidden">
+          <img id="map-image" alt="Mapa da Aldeia - Tibia 7.1" class="map-image hidden">
           <div id="spawns-overlay" class="spawns-overlay">
             <canvas id="spawns-canvas"></canvas>
           </div>
@@ -36,8 +42,8 @@
 
     <section class="exp-panel hidden" id="exp-panel" role="tabpanel" aria-labelledby="tab-exp">
       <div class="exp-panel-inner">
-        <h2>Experiência por level</h2>
-        <p class="exp-desc">Exp total necessária para alcançar cada level (fórmula clássica Tibia 7.x).</p>
+        <h2>Experi&ecirc;ncia por level</h2>
+        <p class="exp-desc">Exp total necess&aacute;ria para alcan&ccedil;ar cada level (f&oacute;rmula cl&aacute;ssica Tibia 7.x).</p>
         <div class="exp-controls">
           <label for="exp-level-min">Level inicial</label>
           <input type="number" id="exp-level-min" min="1" max="999" value="1">
@@ -106,7 +112,7 @@
     </aside>
 
     <footer class="footer">
-      <p>Use o mouse para arrastar o mapa. Scroll para zoom. Coordenadas no estilo Tibia Wiki (<code>#x,y,z</code>).</p>
+      <p>Mapa da Aldeia - Arraste para mover, scroll para zoom. Coordenadas: <code>#x,y,z</code></p>
     </footer>
   </div>
 
