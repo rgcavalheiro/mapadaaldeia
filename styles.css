@@ -135,9 +135,13 @@ body {
   overflow: hidden;
   position: relative;
   cursor: grab;
-  background: var(--aldeia-map-bg);
+  background: #000000;
   user-select: none;
   -webkit-user-select: none;
+}
+
+.map-wrapper.floor-7 {
+  background: var(--aldeia-map-bg);
 }
 
 .map-wrapper:active {
@@ -147,7 +151,7 @@ body {
 .exp-panel {
   grid-area: map;
   overflow: auto;
-  background: var(--aldeia-map-bg);
+  background: var(--aldeia-bg);
   display: flex;
   align-items: flex-start;
   justify-content: center;
@@ -272,6 +276,9 @@ body {
   justify-content: center;
   transform-origin: center center;
   will-change: transform;
+  image-rendering: pixelated;
+  image-rendering: -moz-crisp-edges;
+  image-rendering: crisp-edges;
 }
 
 .map-content-wrapper {
@@ -321,10 +328,14 @@ body {
   max-width: none;
   user-select: none;
   pointer-events: none;
+  image-rendering: pixelated;
+  image-rendering: -moz-crisp-edges;
+  image-rendering: crisp-edges;
 }
 
 .map-image {
   image-rendering: pixelated;
+  image-rendering: -moz-crisp-edges;
   image-rendering: crisp-edges;
 }
 

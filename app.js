@@ -143,11 +143,21 @@
 
   function drawPlaceholder() {
     const ctx = canvas.getContext('2d');
+    ctx.imageSmoothingEnabled = false;
+    ctx.msImageSmoothingEnabled = false; // Para IE/Edge antigo
     const { w, h } = getCanvasSize();
     const ts = MAP_CONFIG.tileSizePx;
-    var blue = MAP_BG_BLUE;
-    ctx.fillStyle = 'rgb(' + blue.r + ',' + blue.g + ',' + blue.b + ')';
-    ctx.fillRect(0, 0, w, h);
+    var currentZ = parseInt(floorSelect.value, 10);
+    // Só desenha fundo azul no andar 7
+    if (currentZ === 7) {
+      var blue = MAP_BG_BLUE;
+      ctx.fillStyle = 'rgb(' + blue.r + ',' + blue.g + ',' + blue.b + ')';
+      ctx.fillRect(0, 0, w, h);
+    } else {
+      // Fundo preto para outros andares
+      ctx.fillStyle = '#000000';
+      ctx.fillRect(0, 0, w, h);
+    }
     ctx.strokeStyle = '#2a2724';
     ctx.lineWidth = 1;
     for (let x = 0; x <= w; x += ts) {
@@ -263,6 +273,8 @@
       var ch = parseInt(mapContentWrapper.style.height, 10);
       if (spawnsCanvas.width && spawnsCanvas.height) {
         var ctx = spawnsCanvas.getContext('2d');
+        ctx.imageSmoothingEnabled = false;
+        ctx.msImageSmoothingEnabled = false;
         ctx.clearRect(0, 0, spawnsCanvas.width, spawnsCanvas.height);
       }
       return;
@@ -289,6 +301,8 @@
       spawnsCanvas.height = ch;
     }
     var ctx = spawnsCanvas.getContext('2d');
+    ctx.imageSmoothingEnabled = false;
+    ctx.msImageSmoothingEnabled = false;
     ctx.clearRect(0, 0, cw, ch);
     var radius = Math.max(2, Math.min(60, 7 / scale));
     var monsterFill = 'rgba(220, 80, 80, 0.85)';
@@ -389,6 +403,7 @@
       const y = parseInt(match[2], 10);
       const z = parseInt(match[3], 10);
       floorSelect.value = String(z);
+      updateFloorBackground(String(z));
       const p = worldToPixel(x, y);
       const { w, h } = getCanvasSize();
       posX = (w / 2 - p.x) * scale;
@@ -485,6 +500,15 @@
     updateHash();
   });
 
+  function updateFloorBackground(z) {
+    var currentZ = parseInt(z, 10);
+    if (currentZ === 7) {
+      mapWrapper.classList.add('floor-7');
+    } else {
+      mapWrapper.classList.remove('floor-7');
+    }
+  }
+
   floorSelect.addEventListener('change', function () {
     var newZ = this.value;
     var { w, h } = getCanvasSize();
@@ -493,6 +517,7 @@
     var world = pixelToWorld(centerX, centerY);
     savedCenterForFloorSwitch = { x: world.x, y: world.y };
     coordZEl.textContent = newZ;
+    updateFloorBackground(newZ);
     loadFloorMap(newZ);
     updateHash();
   });
@@ -563,13 +588,20 @@
       canvas.width = lastMapWidth;
       canvas.height = lastMapHeight;
       var ctx = canvas.getContext('2d');
+      ctx.imageSmoothingEnabled = false;
+      ctx.msImageSmoothingEnabled = false; // Para IE/Edge antigo
       ctx.drawImage(img, 0, 0);
       var imageData = ctx.getImageData(0, 0, lastMapWidth, lastMapHeight);
-      replaceBlackWithBlue(imageData, lastMapWidth, lastMapHeight);
+      // Só substitui preto por azul no andar 7
+      var currentZ = parseInt(z, 10);
+      if (currentZ === 7) {
+        replaceBlackWithBlue(imageData, lastMapWidth, lastMapHeight);
+      }
       ctx.putImageData(imageData, 0, 0);
       mapImage.classList.add('hidden');
       canvas.classList.remove('hidden');
       useImage = true;
+      updateFloorBackground(z);
       if (savedCenterForFloorSwitch) {
         var cx = savedCenterForFloorSwitch.x;
         var cy = savedCenterForFloorSwitch.y;
@@ -652,6 +684,7 @@
   var hashMatch = window.location.hash.slice(1).match(/^(\d+),(\d+),(\d+)$/);
   if (hashMatch) initialZ = parseInt(hashMatch[3], 10);
   floorSelect.value = String(initialZ);
+  updateFloorBackground(String(initialZ));
   loadFloorMap(String(initialZ));
 
   setTimeout(function () {
