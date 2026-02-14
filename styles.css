@@ -28,6 +28,8 @@ body {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.5rem;
   padding: 0.75rem 1rem;
   background: #25252a;
   border-bottom: 1px solid #3a3a42;
@@ -38,6 +40,43 @@ body {
   font-size: 1.25rem;
   font-weight: 600;
   color: #c8b273;
+}
+
+.tabs {
+  display: flex;
+  gap: 0;
+  border-radius: 6px;
+  overflow: hidden;
+  border: 1px solid #3a3a42;
+}
+
+.tabs .tab {
+  padding: 0.4rem 0.9rem;
+  font-size: 0.85rem;
+  background: #1a1a1e;
+  border: none;
+  color: #7a7a85;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+}
+
+.tabs .tab:hover {
+  color: #e0e0e0;
+  background: #25252a;
+}
+
+.tabs .tab.active {
+  background: #c8b273;
+  color: #1a1a1e;
+  font-weight: 600;
+}
+
+.header .coord-display.hidden {
+  display: none !important;
+}
+
+.controls.hidden {
+  display: none !important;
 }
 
 .coord-display {
@@ -64,6 +103,120 @@ body {
 
 .map-wrapper:active {
   cursor: grabbing;
+}
+
+.exp-panel {
+  grid-area: map;
+  overflow: auto;
+  background: #0f0f12;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 1rem;
+}
+
+.exp-panel.hidden {
+  display: none !important;
+}
+
+.exp-panel-inner {
+  max-width: 640px;
+  width: 100%;
+}
+
+.exp-panel h2 {
+  margin: 0 0 0.5rem;
+  font-size: 1.25rem;
+  color: #c8b273;
+}
+
+.exp-desc {
+  margin: 0 0 1rem;
+  font-size: 0.9rem;
+  color: #7a7a85;
+}
+
+.exp-controls,
+.exp-search {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.exp-controls label,
+.exp-search label {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #7a7a85;
+  margin-right: 0.25rem;
+}
+
+.exp-controls input[type="number"],
+.exp-search input[type="number"] {
+  width: 5rem;
+  padding: 0.4rem 0.5rem;
+  background: #1a1a1e;
+  border: 1px solid #3a3a42;
+  border-radius: 4px;
+  color: #e0e0e0;
+  font-size: 0.9rem;
+}
+
+.exp-controls input:focus,
+.exp-search input:focus {
+  border-color: #c8b273;
+  outline: none;
+}
+
+.exp-table-wrap {
+  overflow: auto;
+  max-height: calc(100vh - 220px);
+  border: 1px solid #3a3a42;
+  border-radius: 6px;
+  background: #1a1a1e;
+}
+
+.exp-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9rem;
+}
+
+.exp-table th,
+.exp-table td {
+  padding: 0.5rem 0.75rem;
+  text-align: left;
+  border-bottom: 1px solid #2a2a30;
+}
+
+.exp-table th {
+  position: sticky;
+  top: 0;
+  background: #25252a;
+  color: #c8b273;
+  font-weight: 600;
+  z-index: 1;
+}
+
+.exp-table td {
+  color: #e0e0e0;
+}
+
+.exp-table tbody tr:hover {
+  background: #25252a;
+}
+
+.exp-table tbody tr[data-level].highlight {
+  background: rgba(200, 178, 115, 0.2);
+}
+
+.exp-table td:nth-child(2),
+.exp-table td:nth-child(3) {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
 }
 
 .map-container {

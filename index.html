@@ -10,14 +10,18 @@
   <div class="app">
     <header class="header">
       <h1>Mapa Tibia 7.1</h1>
-      <div class="coord-display">
+      <nav class="tabs" role="tablist">
+        <button type="button" class="tab active" id="tab-mapa" role="tab" aria-selected="true">Mapa</button>
+        <button type="button" class="tab" id="tab-exp" role="tab" aria-selected="false">Exp por Level</button>
+      </nav>
+      <div class="coord-display" id="header-coords">
         <span>X: <strong id="coord-x">0</strong></span>
         <span>Y: <strong id="coord-y">0</strong></span>
         <span>Andar: <strong id="coord-z">7</strong></span>
       </div>
     </header>
 
-    <main class="map-wrapper" id="map-wrapper">
+    <main class="map-wrapper" id="map-wrapper" role="tabpanel" aria-labelledby="tab-mapa">
       <div class="map-container" id="map-container">
         <div class="map-content-wrapper" id="map-content-wrapper">
           <canvas id="map-canvas" width="4096" height="4096"></canvas>
@@ -30,7 +34,37 @@
       <div id="spawn-tooltip" class="spawn-tooltip" aria-hidden="true"></div>
     </main>
 
-    <aside class="controls">
+    <section class="exp-panel hidden" id="exp-panel" role="tabpanel" aria-labelledby="tab-exp">
+      <div class="exp-panel-inner">
+        <h2>Experiência por level</h2>
+        <p class="exp-desc">Exp total necessária para alcançar cada level (fórmula clássica Tibia 7.x).</p>
+        <div class="exp-controls">
+          <label for="exp-level-min">Level inicial</label>
+          <input type="number" id="exp-level-min" min="1" max="999" value="1">
+          <label for="exp-level-max">Level final</label>
+          <input type="number" id="exp-level-max" min="1" max="999" value="100">
+          <button type="button" id="exp-apply-range" class="btn-link">Atualizar</button>
+        </div>
+        <div class="exp-search">
+          <label for="exp-search-level">Buscar level</label>
+          <input type="number" id="exp-search-level" placeholder="Ex: 50" min="1" max="999">
+        </div>
+        <div class="exp-table-wrap">
+          <table class="exp-table" id="exp-table">
+            <thead>
+              <tr>
+                <th>Level</th>
+                <th>Exp total</th>
+                <th>Exp neste level</th>
+              </tr>
+            </thead>
+            <tbody id="exp-table-body"></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <aside class="controls" id="controls-sidebar">
       <div class="control-group">
         <label>Andar (Z)</label>
         <select id="floor-select">
