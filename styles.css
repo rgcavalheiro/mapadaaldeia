@@ -1,4 +1,4 @@
-/* ===== Mapa da Aldeia ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â€šÂ¬Ã¯Â¿Â½ Tibia 7.1 ===== */
+/* ===== Mapa da Aldeia ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¯Ã‚Â¿Ã‚Â½ Tibia 7.1 ===== */
 :root {
   /* Paleta aldeia: terras, dourado, floresta */
   --aldeia-bg: #0f0e0c;
@@ -284,6 +284,9 @@ body {
 .map-content-wrapper {
   position: relative;
   flex-shrink: 0;
+  image-rendering: pixelated;
+  image-rendering: -moz-crisp-edges;
+  image-rendering: crisp-edges;
 }
 
 .spawns-overlay {
@@ -460,6 +463,19 @@ body {
 .btn-link:hover {
   border-color: var(--aldeia-accent);
   color: var(--aldeia-accent);
+}
+
+.cities-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.cities-buttons .city-btn {
+  width: 100%;
+  text-align: left;
+  padding: 0.5rem 0.75rem;
+  font-size: 0.85rem;
 }
 
 /* ----- Footer ----- */
