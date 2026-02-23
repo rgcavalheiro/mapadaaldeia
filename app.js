@@ -597,10 +597,12 @@
   loadSpawns();
 
   var MAP_FOLDER = 'exportremeres';
+  // Cache bust: evita imagem "zuada" na primeira entrada (navegador deixa de usar cópia antiga em cache)
+  var MAP_CACHE_VERSION = 2;
 
   function getFloorFilePath(z) {
     var n = parseInt(z, 10);
-    return MAP_FOLDER + '/Tibia71_' + n + '.bmp';
+    return MAP_FOLDER + '/Tibia71_' + n + '.bmp?v=' + MAP_CACHE_VERSION;
   }
 
   var MAP_BG_BLUE = { r: 51, g: 0, b: 204 };
